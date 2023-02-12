@@ -3,7 +3,7 @@
 */
 
 const launches = new Map();
-const flightNumber = 1;
+let latestFlightNumber = 0;
 
 /** Handle the errors */
 const {
@@ -11,8 +11,19 @@ const {
     NotFoundError,
 } = require("../expressError");
 
+function addNewLaunch(launch){
+    latestFlightNumber++;
+    launches.set(latestFlightNumber, Object.assign(launch, {
+        flightNumber: latestFlightNumber,
+        customers: ["test1", "test2"],
+        success: true,
+        upcoming: true,
+    }));
 
+    return launches.get(latestFlightNumber);
+}
 
 module.exports = {
     launches,
+    addNewLaunch,
 };
