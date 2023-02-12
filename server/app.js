@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const { NotFoundError } = require("./expressError");
 
 /** Routes */
+const planetsRoutes = require("./routes/planets");
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,8 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 /** Routes directories */
+app.use("/planets", planetsRoutes);
+
 
 
 /** Handle 404 errors -- this matches everything */
