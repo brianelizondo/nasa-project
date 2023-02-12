@@ -33,15 +33,20 @@ async function httpGetLaunches() {
 async function httpSubmitLaunch(launch) {
     try{
         const resp = await httpRequest(`launches/`, launch, "post");
-        return resp;
+        return { success: true };
     } catch(err){
         return { success: false };
     }
 }
 
+// Delete launch with given ID.
 async function httpAbortLaunch(id) {
-  // TODO: Once API is ready.
-  // Delete launch with given ID.
+    try{
+        const resp = await httpRequest(`launches/${id}`, id, "delete");
+        return { success: true };
+    } catch(err){
+        return { success: false };
+    }
 }
 
 export {

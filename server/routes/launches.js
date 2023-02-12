@@ -5,11 +5,13 @@ const express = require("express");
 const router = new express.Router();
 const { 
     launches,
+    checkLaunchID, 
     addNewLaunch, 
+    abortLaunchByID, 
 } = require("../models/launches");
 
 /** Handle the errors */
-const { BadRequestError } = require("../expressError");
+const { BadRequestError, NotFoundError } = require("../expressError");
 
 /** 
 * GET /launches
@@ -36,6 +38,21 @@ router.post("/", async function (req, res, next){
 
     const resp = addNewLaunch(launch);
     return res.status(201).json(resp);
+});
+
+/** 
+* DELETE /launches/:id
+*   set to false the launch data
+**/
+router.delete("/:id", async function (req, res, next){
+    const launchID = Number(req.params.id);
+
+    if(!checkLaunchID(launchID)){
+        return next(new NotFoundError("Launch ID not found"));
+    }
+
+    const resp = abortLaunchByID(launchID);
+    return res.status(200).json(resp);
 });
 
 module.exports = router;
