@@ -2,14 +2,17 @@
   "name": "nasa-project-server",
   "version": "1.0.0",
   "description": "NodeJS Developer 2023 Course - NASA Project Exercise - NodeJS Server app",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Brian Elizondo",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
   }
 }
