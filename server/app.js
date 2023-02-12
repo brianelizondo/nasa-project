@@ -10,6 +10,7 @@ const { NotFoundError } = require("./expressError");
 
 /** Routes */
 const planetsRoutes = require("./routes/planets");
+const launchesRoutes = require("./routes/launches");
 
 const app = express();
 app.use(express.json());
@@ -18,7 +19,7 @@ app.use(morgan("tiny"));
 
 /** Routes directories */
 app.use("/planets", planetsRoutes);
-
+app.use("/launches", launchesRoutes);
 
 
 /** Handle 404 errors -- this matches everything */

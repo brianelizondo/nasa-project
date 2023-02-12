@@ -5,9 +5,6 @@ const express = require("express");
 const router = new express.Router();
 const planets = require("../models/planets");
 
-/** Handle the errors */
-const { BadRequestError } = require("../expressError");
-
 /** 
 * GET /planets
 *   Returns all planets

@@ -19,12 +19,14 @@ async function httpRequest(endpoint, data = {}, method = "get"){
 // TODO: Once API is ready
 // Load planets and return as JSON
 async function httpGetPlanets(){
-    return await httpRequest(`planets/`);
+    const resp = await httpRequest(`planets/`);
+    return resp.planets;
 }
 
+// Load launches, sort by flight number, and return as JSON.
 async function httpGetLaunches() {
-  // TODO: Once API is ready.
-  // Load launches, sort by flight number, and return as JSON.
+    const resp = await httpRequest(`launches/`);
+    return resp.sort((a, b) => a.flightNumber - b.flightNumber);
 }
 
 async function httpSubmitLaunch(launch) {
@@ -38,8 +40,8 @@ async function httpAbortLaunch(id) {
 }
 
 export {
-  httpGetPlanets,
-  httpGetLaunches,
-  httpSubmitLaunch,
-  httpAbortLaunch,
+    httpGetPlanets,
+    httpGetLaunches,
+    httpSubmitLaunch,
+    httpAbortLaunch,
 };

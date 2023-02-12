@@ -4,7 +4,10 @@
   "description": "NodeJS Developer 2023 Course - NASA Project Exercise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "npm run start --prefix server",
+    "client": "npm start --prefix client",
+    "start": "npm run server & npm run client",
+    "test": "npm run test --prefix server & npm run test test -- prefix client"
   },
   "keywords": [],
   "author": "Brian Elizondo",
