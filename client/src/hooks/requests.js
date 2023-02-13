@@ -20,7 +20,7 @@ async function httpRequest(endpoint, data = {}, method = "get"){
 // Load planets and return as JSON
 async function httpGetPlanets(){
     const resp = await httpRequest(`planets/`);
-    return resp.planets;
+    return resp;
 }
 
 // Load launches, sort by flight number, and return as JSON.

@@ -4,8 +4,12 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const path = require("path");
+const Planet = require("./planets.mongodb");
 
-const planets = [];
+// Function to get all planets
+async function getAllPlanets(){
+    return await Planet.find({});
+}
 
 // Function to check if a planet is habitable (return true or false)
 function isHabitablePlanet(planet) {
@@ -23,15 +27,34 @@ fs.createReadStream(path.join(__dirname, '..', 'data', 'kepler_data.csv'))
     }))
     .on('data', (data) => {
         if(isHabitablePlanet(data)) {
-            planets.push(data);
+            // code line to use with temporal memory storage
+            // planets.push(data);
+
+            // code to use MongoDB model/database
+            savePlanet(data);
         }
     })
     .on('error', (err) => {
-        console.log(err);
+        console.error(err);
     }
 );
 
+// function tu save each planet
+async function savePlanet(planet){
+    try{
+        await Planet.updateOne({
+            keplerName: planet.kepler_name
+        }, {
+            keplerName: planet.kepler_name
+        }, {
+            upsert: true
+        });
+    } catch (err){
+        console.error(`The planet could not be added: ${err}`)
+    }
+}
+
 
 module.exports = {
-    planets
+    getAllPlanets
 };

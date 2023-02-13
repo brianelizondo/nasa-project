@@ -4,12 +4,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-/** Handle the errors */
-const {
-    BadRequestError,
-    NotFoundError,
-} = require("../expressError");
-
 // launches schema
 const launchesSchema = new Schema({
     flightNumber: {
@@ -54,3 +48,4 @@ const launchesSchema = new Schema({
 // Launch model connected with launchesSchema
 const Launch = mongoose.model('Launch', launchesSchema);
 
+module.exports = Launch;

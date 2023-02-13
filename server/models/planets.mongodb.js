@@ -4,12 +4,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-/** Handle the errors */
-const {
-    BadRequestError,
-    NotFoundError,
-} = require("../expressError");
-
 // planets schema
 const planetsSchema = new Schema({
     keplerName: {
@@ -20,3 +14,5 @@ const planetsSchema = new Schema({
 
 // Planet model connected with planetsSchema
 const Planet = mongoose.model('Planet', planetsSchema);
+
+module.exports = Planet;
