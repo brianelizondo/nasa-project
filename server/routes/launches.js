@@ -4,7 +4,7 @@
 const express = require("express");
 const router = new express.Router();
 const { 
-    launches,
+    getAllLaunches,
     checkLaunchID, 
     addNewLaunch, 
     abortLaunchByID, 
@@ -18,7 +18,7 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 *   launches, sort by flight number
 **/
 router.get("/", async function (req, res, next){
-    return res.status(200).json(Array.from(launches.values()));
+    return res.status(200).json(await getAllLaunches());
 });
 
 /** 
@@ -36,8 +36,13 @@ router.post("/", async function (req, res, next){
         return next(new BadRequestError("Invalid launch date"));
     }
 
-    const resp = addNewLaunch(launch);
-    return res.status(201).json(resp);
+    try{
+        const resp = await addNewLaunch(launch);
+        console.log(resp);
+        return res.status(201).json(resp);
+    } catch (err){
+        next(err);
+    }
 });
 
 /** 
@@ -47,12 +52,16 @@ router.post("/", async function (req, res, next){
 router.delete("/:id", async function (req, res, next){
     const launchID = Number(req.params.id);
 
-    if(!checkLaunchID(launchID)){
+    if(!await checkLaunchID(launchID)){
         return next(new NotFoundError("Launch ID not found"));
     }
 
-    const resp = abortLaunchByID(launchID);
-    return res.status(200).json(resp);
+    const launchAborted = await abortLaunchByID(launchID);
+    if(!launchAborted){
+        return next(new BadRequestError("Launch could not be aborted"));
+    }
+
+    return res.status(200).json({ aborted: true });
 });
 
 module.exports = router;

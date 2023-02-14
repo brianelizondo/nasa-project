@@ -8,7 +8,7 @@ const Planet = require("./planets.mongodb");
 
 // Function to get all planets
 async function getAllPlanets(){
-    return await Planet.find({});
+    return await Planet.find({}, { '_id': 0, '__v': 0 });
 }
 
 // Function to check if a planet is habitable (return true or false)

@@ -33,7 +33,7 @@ const launchesSchema = new Schema({
         type: [ Array ],
         require: true,
     },
-    succes: {
+    success: {
         type: Boolean,
         require: true,
         default: true
