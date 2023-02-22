@@ -13,7 +13,12 @@ mongoose.connection.once('open', () => {
 async function connectToMongoDB(){
     await mongoose.connect(MONGODB_URL);
 }
+// close MongoDB connection
+async function disconnectMongoDB(){
+    await mongoose.disconnect();
+}
 
 module.exports = {
-    connectToMongoDB
+    connectToMongoDB,
+    disconnectMongoDB
 }

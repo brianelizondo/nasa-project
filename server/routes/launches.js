@@ -38,7 +38,6 @@ router.post("/", async function (req, res, next){
 
     try{
         const resp = await addNewLaunch(launch);
-        console.log(resp);
         return res.status(201).json(resp);
     } catch (err){
         next(err);
