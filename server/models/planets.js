@@ -6,6 +6,11 @@ const { parse } = require("csv-parse");
 const path = require("path");
 const Planet = require("./planets.mongodb");
 
+/** Handle the errors */
+const {
+    BadRequestError
+} = require("../expressError");
+
 // Function to get all planets
 async function getAllPlanets(){
     return await Planet.find({}, { '_id': 0, '__v': 0 });
@@ -20,24 +25,32 @@ function isHabitablePlanet(planet) {
 } 
 
 // Read the file line by line and check if the planet is habitable and push to the planets array
-fs.createReadStream(path.join(__dirname, '..', 'data', 'kepler_data.csv'))
-    .pipe(parse({
-        comment: '#',
-        columns: true,
-    }))
-    .on('data', (data) => {
-        if(isHabitablePlanet(data)) {
-            // code line to use with temporal memory storage
-            // planets.push(data);
+function loadPlanetsData(){
+	return new Promise((resolve, reject) => {
+		fs.createReadStream(path.join(__dirname, '..', 'data', 'kepler_data.csv'))
+			.pipe(parse({
+				comment: '#',
+				columns: true,
+			}))
+			.on('data', async (data) => {
+				if(isHabitablePlanet(data)) {
+					// code line to use with temporal memory storage
+					// planets.push(data);
 
-            // code to use MongoDB model/database
-            savePlanet(data);
-        }
-    })
-    .on('error', (err) => {
-        console.error(err);
-    }
-);
+					// code to use MongoDB model/database
+					await savePlanet(data);
+				}
+			})
+			.on('error', (err) => {
+				console.error(err);
+				reject(err);
+			})
+			.on('end', async () => {
+				resolve();
+			}
+		);
+  	});
+}
 
 // function tu save each planet
 async function savePlanet(planet){
@@ -50,11 +63,13 @@ async function savePlanet(planet){
             upsert: true
         });
     } catch (err){
-        console.error(`The planet could not be added: ${err}`)
+        // console.error(`The planet could not be added: ${err}`)
+        return new BadRequestError(`The planet could not be added: ${err}`);
     }
 }
 
 
 module.exports = {
-    getAllPlanets
+    getAllPlanets,
+    loadPlanetsData
 };

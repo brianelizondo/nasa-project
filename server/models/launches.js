@@ -19,7 +19,7 @@ async function getAllLaunches(){
 // Function to get the new flight number
 async function getNewFlightNumber(){
     const lastFligthNumber =  await Launch.findOne({}).sort({ flightNumber: -1 });
-    return lastFligthNumber.flightNumber + 1;
+    return !lastFligthNumber ? 1 : lastFligthNumber.flightNumber + 1;
 }
 
 async function checkLaunchID(launchID){
