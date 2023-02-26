@@ -4,6 +4,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
 
 /** Function to handle express errors */
 const { NotFoundError } = require("./expressError");
@@ -16,10 +17,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 /** Routes directories */
 app.use("/planets", planetsRoutes);
 app.use("/launches", launchesRoutes);
+// static route to production 
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 
 /** Handle 404 errors -- this matches everything */

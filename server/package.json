@@ -4,6 +4,7 @@
   "description": "NodeJS Developer 2023 Course - NASA Project Exercise - NodeJS Server app",
   "main": "server.js",
   "scripts": {
+    "start-basic": "node server.js",
     "start": "nodemon server.js",
     "test": "jest --detectOpenHandles"
   },

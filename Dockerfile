@@ -4,14 +4,19 @@ WORKDIR /app
 
 COPY package*.json ./
 
-COPY ./server ./server
+COPY ./client/package*.json client/
+RUN npm run install-client
+
+COPY ./server/package*.json server/
 RUN npm run install-server --omit=dev
 
-COPY ./client ./client
-RUN npm run install-client
+COPY client/ client/
+RUN npm run build --prefix client
+
+COPY server/ server/
 
 USER node
 
-CMD [ "npm", "start", "--prefix", "server" ]
+CMD [ "npm", "run", "start-basic", "--prefix", "server" ]
 
 EXPOSE 3001
