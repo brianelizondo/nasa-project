@@ -1,6 +1,6 @@
 // Function to make each request to the back-end api
 import axios from 'axios';
-const API_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const API_URL = process.env.REACT_APP_BASE_URL || "";
 
 async function httpRequest(endpoint, data = {}, method = "get"){
     const url = `${API_URL}/${endpoint}`;
