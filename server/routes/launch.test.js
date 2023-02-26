@@ -4,14 +4,16 @@ const {
     connectToMongoDB,
     disconnectMongoDB
 } = require("../db");
+const { loadPlanetsData } = require("../models/planets");
 
 beforeAll(async () => {
     await connectToMongoDB();
+    await loadPlanetsData();
 });
-
 afterAll(async () => {
     await disconnectMongoDB();
 });
+
 
 describe("Test GET /launches", () =>{
     test("It should respond with 200 status code", async () => {
@@ -50,7 +52,8 @@ describe("Test POST /launches", () => {
             upcoming: true
         }));
         // update the last flight added
-        lastFlightAdded = response.body.flightNumber;
+        fligthCreated = response.body;
+		lastFlightAdded = fligthCreated.flightNumber;
     });
 
     test("It should respond with 400 status code if has missing data", async () => {
@@ -73,8 +76,7 @@ describe("Test POST /launches", () => {
 describe("Test DELETE /launches/:id", () => {
     test("It should respond with 200 status code and launch deleted object", async () => {
         const response = await request(app)
-            .delete(`/launches/${lastFlightAdded}`)
-            .send(launchTest);
+            .delete(`/launches/${lastFlightAdded}`);
         expect(response.statusCode).toBe(200);
         expect(response.body).toEqual({ aborted: true });
     });
